@@ -1,5 +1,6 @@
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
+import Iter "mo:core/Iter";
 import Runtime "mo:core/Runtime";
 import AccessControl "authorization/access-control";
 import MixinAuthorization "authorization/MixinAuthorization";
@@ -42,13 +43,28 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Promote caller to admin - ADMIN ONLY
-  // This allows existing admins to promote other users
-  public shared ({ caller }) func promoteCallerToAdmin() : async () {
+  // Promote another user to admin - ADMIN ONLY
+  public shared ({ caller }) func promoteToAdmin(target : Principal) : async () {
     if (not AccessControl.isAdmin(accessControlState, caller)) {
       Runtime.trap("Unauthorized: Only admins can promote users to admin");
     };
-    
-    AccessControl.assignRole(accessControlState, caller, caller, #admin);
+    if (target == caller) {
+      Runtime.trap("Cannot promote yourself using this function");
+    };
+    // AccessControl.assignRole already includes admin-only guard, but we check explicitly for clarity
+    AccessControl.assignRole(accessControlState, caller, target, #admin);
+  };
+
+  // Search for users by exact name match - ADMIN ONLY
+  public query ({ caller }) func getUsersByExactName(name : Text) : async [(Principal, UserProfile)] {
+    if (not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Only admins can search users by name");
+    };
+
+    let filteredProfiles = userProfiles.filter(
+      func(_, profile) { profile.name == name }
+    );
+
+    filteredProfiles.toArray();
   };
 };

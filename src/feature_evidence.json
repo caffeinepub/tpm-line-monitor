@@ -2,13 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-provide-a-frontend-flow-for-the-currently-signed-in-user-to-become-admin-calling-the-new-backend-promotion-api-and-then-switching-the-app-role-to-admin-so-admin-navigation-and-admin-pages-become-accessible",
-      "featureTitle": "Provide a frontend flow for the currently signed-in user to become Admin, calling the new backend promotion API and then switching the app role to `admin` so admin navigation and admin pages become accessible.",
+      "featureId": "feature-update-the-admin-users-page-to-support-promoting-a-specific-user-to-admin-using-the-new-backend-api-including-an-explicit-action-to-make-uday-chougule-an-admin-once-that-user-is-discoverable-in-the-list-lookup",
+      "featureTitle": "Update the Admin > Users page to support promoting a specific user to Admin using the new backend API (including an explicit action to make \"Uday Chougule\" an Admin once that user is discoverable in the list/lookup).",
       "files": [
-        "frontend/src/components/auth/BecomeAdminButton.tsx",
-        "frontend/src/components/layout/AppShell.tsx",
         "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/auth/RoleLandingPage.tsx"
+        "frontend/src/pages/admin/AdminUsersPage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -19,7 +17,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-12"
+        "REQ-15"
       ],
       "confidence": "high"
     }

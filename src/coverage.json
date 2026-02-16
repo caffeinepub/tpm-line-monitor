@@ -1,38 +1,40 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-16T11:49:57.631Z",
+  "generatedAt": "2026-02-16T12:03:54.107Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
+    "total": 3,
     "implemented": 1,
     "items": [
       {
-        "id": "REQ-11",
-        "summary": "Add a backend API that can promote the current caller (Internet Identity principal) to Admin so that the caller is recognized as an Admin by backend authorization checks and by any existing `getCallerUserRole()` logic.",
+        "id": "REQ-13",
+        "summary": "Add a backend admin-only API that allows an existing Admin to promote another user (not the caller) to the Admin role, so the app can make the user named \"Uday Chougule\" an admin.",
         "status": "unknown",
         "plannedFiles": [],
         "matchedFiles": []
       },
       {
-        "id": "REQ-12",
-        "summary": "Provide a frontend flow for the currently signed-in user to become Admin, calling the new backend promotion API and then switching the app role to `admin` so admin navigation and admin pages become accessible.",
+        "id": "REQ-14",
+        "summary": "Add a backend admin-only query API to support identifying the correct account for \"Uday Chougule\" (e.g., list known user profiles with their principals and names, or provide a lookup that resolves a principal by exact profile name).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-15",
+        "summary": "Update the Admin > Users page to support promoting a specific user to Admin using the new backend API (including an explicit action to make \"Uday Chougule\" an Admin once that user is discoverable in the list/lookup).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/usePromoteCallerToAdmin.ts",
-          "frontend/src/components/auth/BecomeAdminButton.tsx",
-          "frontend/src/components/layout/AppShell.tsx",
-          "frontend/src/pages/auth/RoleLandingPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/admin/AdminUsersPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/auth/BecomeAdminButton.tsx",
-          "frontend/src/components/layout/AppShell.tsx",
-          "frontend/src/pages/auth/RoleLandingPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/admin/AdminUsersPage.tsx"
         ]
       }
     ]
@@ -45,12 +47,10 @@
     "frontend-implementation-plan.json",
     "frontend/src/backend.d.ts",
     "frontend/src/backend.ts",
-    "frontend/src/components/auth/BecomeAdminButton.tsx",
-    "frontend/src/components/layout/AppShell.tsx",
     "frontend/src/declarations/backend.did.d.ts",
     "frontend/src/declarations/backend.did.js",
     "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/auth/RoleLandingPage.tsx",
+    "frontend/src/pages/admin/AdminUsersPage.tsx",
     "frontend/src/utils/urlParams.ts",
     "project_state.json",
     "scratch/component-selection.json",

@@ -103,8 +103,9 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    getUsersByExactName(name: string): Promise<Array<[Principal, UserProfile]>>;
     isCallerAdmin(): Promise<boolean>;
-    promoteCallerToAdmin(): Promise<void>;
+    promoteToAdmin(target: Principal): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
 }
 import type { UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
@@ -180,6 +181,20 @@ export class Backend implements backendInterface {
             return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
         }
     }
+    async getUsersByExactName(arg0: string): Promise<Array<[Principal, UserProfile]>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getUsersByExactName(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getUsersByExactName(arg0);
+            return result;
+        }
+    }
     async isCallerAdmin(): Promise<boolean> {
         if (this.processError) {
             try {
@@ -194,17 +209,17 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async promoteCallerToAdmin(): Promise<void> {
+    async promoteToAdmin(arg0: Principal): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.promoteCallerToAdmin();
+                const result = await this.actor.promoteToAdmin(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.promoteCallerToAdmin();
+            const result = await this.actor.promoteToAdmin(arg0);
             return result;
         }
     }

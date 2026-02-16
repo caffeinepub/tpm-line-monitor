@@ -1,13 +1,14 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
+  "projectStateVersion": 9,
   "summary": "TPM Line Monitor: a simple role-based web app for steel processing plants to track TPM across multiple production lines (machine health/status, downtime reasons, maintenance activities, operator autonomous maintenance, compliance, and basic OEE dashboard/reporting) to reduce breakdowns and improve availability.",
   "architectural_notes": [
     "Web app usable on mobile, tablet, and desktop (no installation).",
     "Cloud database storage with automatic backups.",
     "Role-based access control tied to user roles (Admin/Supervisor/Operator/Maintenance).",
     "Shop-floor UX: large buttons, minimal typing (dropdowns/checkboxes), fast operator flow (<30s).",
-    "Support export/download of reports (Excel/PDF)."
+    "Support export/download of reports (Excel/PDF).",
+    "Support admin-managed role assignment for other users (e.g., promote a specified username/account to Admin), not only self-promotion."
   ],
   "known_issues": [],
   "isFixRequest": false,
@@ -99,6 +100,14 @@
         "REQ-12"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-admin-users-page-to-support-promoting-a-specific-user-to-admin-using-the-new-backend-api-including-an-explicit-action-to-make-uday-chougule-an-admin-once-that-user-is-discoverable-in-the-list-lookup",
+      "title": "Update the Admin > Users page to support promoting a specific user to Admin using the new backend API (including an explicit action to make \"Uday Chougule\" an Admin once that user is discoverable in the list/lookup).",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -167,6 +176,28 @@
       "summary": "Add a backend API that can promote the current caller (Internet Identity principal) to Admin so that the caller is recognized as an Admin by backend authorization checks and by any existing `getCallerUserRole()` logic.",
       "reqIds": [
         "REQ-11"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Allow setting a specific named user (e.g., Uday Chougule) as Admin (admin-managed role assignment for other users, not just self-promotion)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add a backend admin-only API that allows an existing Admin to promote another user (not the caller) to the Admin role, so the app can make the user named \"Uday Chougule\" an admin.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Add a backend admin-only query API to support identifying the correct account for \"Uday Chougule\" (e.g., list known user profiles with their principals and names, or provide a lookup that resolves a principal by exact profile name).",
+      "reqIds": [
+        "REQ-14"
       ],
       "status": "pending"
     }

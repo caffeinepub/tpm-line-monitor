@@ -20,7 +20,8 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    getUsersByExactName(name: string): Promise<Array<[Principal, UserProfile]>>;
     isCallerAdmin(): Promise<boolean>;
-    promoteCallerToAdmin(): Promise<void>;
+    promoteToAdmin(target: Principal): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
 }

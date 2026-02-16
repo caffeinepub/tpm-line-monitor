@@ -1,43 +1,26 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Frontend flow to promote the current signed-in user to Admin",
+  "title": "Admin Users: Promote user to Admin",
   "requirements": [
     {
-      "id": "REQ-12",
-      "summary": "Add a UI action for the signed-in user to call the backend promotion capability, switch app role to admin on success, and keep role consistent after refresh.",
+      "id": "REQ-15",
+      "summary": "Update Admin > Users page to search/select a user (including \"Uday Chougule\") and promote them to Admin with success/error feedback and refreshed role indicator.",
       "acceptanceCriteria": [
-        "When signed in, the user can trigger an explicit action in the UI to “Become Admin” (English user-facing text).",
-        "Triggering the action calls the backend admin-promotion API and shows a pending/loading state while the call is in progress.",
-        "On success, the app role is set to `admin` (using the existing role store) and the user is navigated to an admin route (e.g., `/admin/users`).",
-        "On failure, the UI displays an error message in English and does not switch the role to `admin`.",
-        "After a page refresh, the user can still access admin navigation/pages without having to repeat the promotion action (i.e., role and backend state remain consistent)."
+        "Admin Users UI provides a clear \"Make Admin\" action for a user row or for a searched/selected user.",
+        "Triggering the action calls the backend promotion capability and shows success/error feedback in English.",
+        "After successful promotion, the UI refreshes and shows that the user is now an Admin (role indicator updates)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/usePromoteCallerToAdmin.ts",
-          "operation": "create",
-          "description": "Create a React Query mutation hook that calls the backend capability `promoteCallerToAdmin()` via the existing actor, exposes pending/error state, and invalidates/refetches any role-related queries (e.g., `currentUserRole`) on success. Use the selected `authorization` component’s frontend guidance for role-based access control and error handling; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/auth/BecomeAdminButton.tsx",
-          "operation": "create",
-          "description": "Add a small, reusable UI component that renders an explicit “Become Admin” action for authenticated users. It should: (1) call the `usePromoteCallerToAdmin` hook, (2) show a loading/pending state while the call is in progress, (3) on success set the app role to `admin` using the existing role store and navigate to `/admin/users`, and (4) on failure show an English error message (inline and/or via existing toast system). Use the selected `authorization` component patterns to determine whether to show/hide/disable the button based on the caller’s backend role; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/layout/AppShell.tsx",
-          "operation": "modify",
-          "description": "Wire the “Become Admin” UI into the signed-in experience (e.g., in the header near `UserIdentityBadge`) so it is reachable even after the user has already selected a non-admin app role. Also add a lightweight role-consistency sync on app load: if backend caller role indicates admin, ensure the persisted app role becomes `admin` so admin navigation/pages remain accessible after refresh; if backend role is not admin but the app role is `admin`, clear/downgrade the role and avoid showing admin navigation. Use the selected `authorization` component’s frontend guidance (role querying + handling authorization traps); verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/auth/RoleLandingPage.tsx",
-          "operation": "modify",
-          "description": "Update the role selection view to reflect backend authorization: fetch the backend caller role (via the existing role query hook) and only enable selecting the `admin` role when the backend role is `admin`. If the backend role is not admin, keep an explicit “Become Admin” action (English text) available here (using the new promotion hook) with loading and error UI, and only set app role to `admin` + navigate to `/admin/users` after a successful promotion. Verify the component's usage instructions before implementing."
-        },
-        {
           "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Ensure role-related query behavior supports the promotion flow: keep `useGetCallerUserRole` usable for post-promotion refresh (no retries on auth traps; stable `queryKey` for invalidation). If needed, export any additional helpers to invalidate/refetch role state after promotion without modifying forbidden auth/actor hooks. Use the selected `authorization` component’s frontend guidance for access control UI and error handling; verify the component's usage instructions before implementing."
+          "description": "Add React Query hooks to (1) find users by exact profile name via the backend capability (e.g., for \"Uday Chougule\") and (2) promote a selected user principal to admin using the backend capability; handle authorization traps as user-friendly English errors. Use the selected \"authorization\" component patterns for authenticated/role-based access flows; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminUsersPage.tsx",
+          "operation": "modify",
+          "description": "Replace the static demo users table with an admin-only user lookup/list powered by the new hooks: include an exact-name search (prefill or quick action for \"Uday Chougule\"), render search results as rows, show a clear per-row \"Make Admin\" action (disabled/hidden when already admin), and display English success/error feedback (and refresh/optimistically update the row role indicator after promotion). Use the selected \"authorization\" component guidance to handle unauthorized errors gracefully; verify the component's usage instructions before implementing."
         }
       ]
     }

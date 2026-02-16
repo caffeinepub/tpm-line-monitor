@@ -20,8 +20,12 @@ export interface _SERVICE {
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'getUsersByExactName' : ActorMethod<
+    [string],
+    Array<[Principal, UserProfile]>
+  >,
   'isCallerAdmin' : ActorMethod<[], boolean>,
-  'promoteCallerToAdmin' : ActorMethod<[], undefined>,
+  'promoteToAdmin' : ActorMethod<[Principal], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;

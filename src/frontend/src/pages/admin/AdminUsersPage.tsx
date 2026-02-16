@@ -3,103 +3,193 @@ import WireframeSection from '../../components/common/WireframeSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Pencil } from 'lucide-react';
+import { Search, UserPlus, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useGetUsersByExactName, usePromoteToAdmin } from '../../hooks/useQueries';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { useInternetIdentity } from '../../hooks/useInternetIdentity';
 
 export default function AdminUsersPage() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [userRole, setUserRole] = useState('');
+  const [searchName, setSearchName] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const users = [
-    { id: '1', name: 'John Smith', role: 'Operator', email: 'john@example.com' },
-    { id: '2', name: 'Sarah Johnson', role: 'Supervisor', email: 'sarah@example.com' },
-    { id: '3', name: 'Mike Davis', role: 'Maintenance', email: 'mike@example.com' },
-    { id: '4', name: 'Admin User', role: 'Admin', email: 'admin@example.com' },
-  ];
+  const { identity } = useInternetIdentity();
+  const currentUserPrincipal = identity?.getPrincipal().toString();
 
-  const handleSaveUser = () => {
-    setIsDialogOpen(false);
-    setUserName('');
-    setUserRole('');
+  const { data: searchResults, isLoading: isSearching, error: searchError } = useGetUsersByExactName(searchQuery);
+  const promoteToAdminMutation = usePromoteToAdmin();
+
+  const handleSearch = () => {
+    setSearchQuery(searchName.trim());
+    setSuccessMessage('');
+    setErrorMessage('');
+  };
+
+  const handlePromoteToAdmin = async (principal: string, name: string) => {
+    setSuccessMessage('');
+    setErrorMessage('');
+
+    try {
+      // Convert string principal to Principal object
+      const { Principal } = await import('@dfinity/principal');
+      const targetPrincipal = Principal.fromText(principal);
+      
+      await promoteToAdminMutation.mutateAsync(targetPrincipal);
+      setSuccessMessage(`${name} has been successfully promoted to Admin!`);
+    } catch (error: any) {
+      setErrorMessage(error.message || 'Failed to promote user to admin');
+    }
+  };
+
+  const isCurrentUser = (principal: string) => {
+    return principal === currentUserPrincipal;
   };
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold mb-2">User Management</h2>
-          <p className="text-muted-foreground text-lg">Manage system users and their roles</p>
-        </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="lg" className="gap-2">
-              <Plus className="h-5 w-5" />
-              Add User
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New User</DialogTitle>
-              <DialogDescription>Create a new user account with assigned role</DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="userName">Full Name</Label>
-                <Input
-                  id="userName"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Enter user name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="userRole">Role</Label>
-                <Select value={userRole} onValueChange={setUserRole}>
-                  <SelectTrigger id="userRole">
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="operator">Operator</SelectItem>
-                    <SelectItem value="supervisor">Supervisor</SelectItem>
-                    <SelectItem value="maintenance">Maintenance Technician</SelectItem>
-                    <SelectItem value="admin">Administrator</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={handleSaveUser} className="w-full">Save User</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+      <div>
+        <h2 className="text-3xl font-bold mb-2">User Management</h2>
+        <p className="text-muted-foreground text-lg">Search for users and manage admin roles</p>
       </div>
 
-      <WireframeSection title="Users List">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-medium">{user.name}</TableCell>
-                <TableCell>{user.role}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell className="text-right">
-                  <Button variant="ghost" size="sm">
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      {successMessage && (
+        <Alert className="bg-success/10 border-success">
+          <CheckCircle2 className="h-5 w-5 text-success" />
+          <AlertDescription className="text-success font-medium">
+            {successMessage}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {errorMessage && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-5 w-5" />
+          <AlertDescription>
+            {errorMessage}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <WireframeSection 
+        title="Search Users" 
+        description="Search for a user by their exact profile name to manage their admin status"
+      >
+        <div className="space-y-4">
+          <div className="flex gap-3">
+            <div className="flex-1 space-y-2">
+              <Label htmlFor="searchName">User Name</Label>
+              <Input
+                id="searchName"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                placeholder="Enter exact user name (e.g., Uday Chougule)"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
+              />
+            </div>
+            <div className="flex items-end">
+              <Button 
+                onClick={handleSearch} 
+                size="lg" 
+                className="gap-2"
+                disabled={!searchName.trim() || isSearching}
+              >
+                <Search className="h-5 w-5" />
+                {isSearching ? 'Searching...' : 'Search'}
+              </Button>
+            </div>
+          </div>
+
+          {searchError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-5 w-5" />
+              <AlertDescription>
+                {searchError instanceof Error ? searchError.message : 'Failed to search users'}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {searchQuery && !isSearching && searchResults && (
+            <div className="mt-6">
+              {searchResults.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  No user found with the name "{searchQuery}"
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Principal ID</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {searchResults.map(([principal, profile]) => {
+                      const principalString = principal.toString();
+                      const isSelf = isCurrentUser(principalString);
+                      
+                      return (
+                        <TableRow key={principalString}>
+                          <TableCell className="font-medium">
+                            {profile.name}
+                            {isSelf && (
+                              <Badge variant="outline" className="ml-2">You</Badge>
+                            )}
+                          </TableCell>
+                          <TableCell className="font-mono text-sm text-muted-foreground">
+                            {principalString.slice(0, 20)}...
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="secondary">User</Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              onClick={() => handlePromoteToAdmin(principalString, profile.name)}
+                              disabled={promoteToAdminMutation.isPending || isSelf}
+                              size="lg"
+                              className="gap-2"
+                            >
+                              <UserPlus className="h-5 w-5" />
+                              {promoteToAdminMutation.isPending ? 'Promoting...' : 'Make Admin'}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              )}
+            </div>
+          )}
+        </div>
+      </WireframeSection>
+
+      <WireframeSection 
+        title="Quick Actions" 
+        description="Common user searches"
+      >
+        <div className="flex flex-wrap gap-3">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => {
+              setSearchName('Uday Chougule');
+              setSearchQuery('Uday Chougule');
+              setSuccessMessage('');
+              setErrorMessage('');
+            }}
+          >
+            Search for Uday Chougule
+          </Button>
+        </div>
       </WireframeSection>
     </div>
   );
