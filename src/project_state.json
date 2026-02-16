@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "TPM Line Monitor: a simple role-based web app for steel processing plants to track TPM across multiple production lines (machine health/status, downtime reasons, maintenance activities, operator autonomous maintenance, compliance, and basic OEE dashboard/reporting) to reduce breakdowns and improve availability.",
+  "architectural_notes": [
+    "Web app usable on mobile, tablet, and desktop (no installation).",
+    "Cloud database storage with automatic backups.",
+    "Role-based access control tied to user roles (Admin/Supervisor/Operator/Maintenance).",
+    "Shop-floor UX: large buttons, minimal typing (dropdowns/checkboxes), fast operator flow (<30s).",
+    "Support export/download of reports (Excel/PDF)."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-complete-mvp-ui-wireframe-page-structure-component-layout-for-the-tpm-line-monitor-web-app-covering-the-full-navigation-and-all-key-screens-for-each-role-operator-supervisor-maintenance-technician-admin",
+      "title": "Create a complete MVP UI wireframe (page structure + component layout) for the TPM Line Monitor web app, covering the full navigation and all key screens for each role (Operator, Supervisor, Maintenance Technician, Admin).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-and-implement-the-authentication-role-landing-wireframes-login-screen-username-password-and-post-login-landing-that-routes-users-to-the-correct-role-home-operator-supervisor-maintenance-technician-admin",
+      "title": "Design and implement the Authentication + Role Landing wireframes: Login screen (username + password), and post-login landing that routes users to the correct role home (Operator, Supervisor, Maintenance Technician, Admin).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-and-implement-the-operator-wireframes-for-the-30-second-flow-machine-line-selection-machine-status-update-running-idle-breakdown-start-stop-time-capture-downtime-reason-dropdown-when-in-breakdown-and-an-automatic-downtime-duration-display-calculation-area",
+      "title": "Design and implement the Operator wireframes for the <30-second flow: Machine/Line selection, Machine status update (Running/Idle/Breakdown), Start/Stop time capture, Downtime reason dropdown when in Breakdown, and an automatic downtime duration display/calculation area.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-and-implement-the-autonomous-maintenance-operator-tpm-wireframes-a-checklist-for-cleaning-lubrication-inspection-completion-marking-optional-photo-upload-ui-and-a-simple-completion-confirmation-state",
+      "title": "Design and implement the Autonomous Maintenance (Operator TPM) wireframes: a checklist for cleaning/lubrication/inspection, completion marking, optional photo upload UI, and a simple completion confirmation state.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-and-implement-the-supervisor-wireframes-dashboard-overview-machines-running-vs-stopped-oee-summary-today-s-breakdown-count-pending-maintenance-tasks-tpm-compliance-using-simple-green-yellow-red-indicators-screens-to-verify-approve-operator-tpm-activities-view-missed-activities-and-access-report-downloads",
+      "title": "Design and implement the Supervisor wireframes: Dashboard overview (machines running vs stopped, OEE summary, today’s breakdown count, pending maintenance tasks, TPM compliance %) using simple green/yellow/red indicators; screens to verify/approve operator TPM activities, view missed activities, and access report downloads.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-and-implement-the-maintenance-technician-and-admin-wireframes-maintenance-technician-screens-for-breakdown-jobs-list-detail-update-progress-close-job-with-repair-time-root-cause-admin-screens-for-managing-machines-and-users-and-for-setting-planned-maintenance-schedules-daily-weekly-monthly",
+      "title": "Design and implement the Maintenance Technician and Admin wireframes: Maintenance Technician screens for breakdown jobs (list, detail, update progress, close job with repair time + root cause); Admin screens for managing machines and users, and for setting planned maintenance schedules (daily/weekly/monthly).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-cohesive-distinct-industrial-visual-theme-across-the-wireframe-ui-colors-typography-spacing-and-component-styling-suitable-for-steel-processing-plants-and-shop-floor-readability-avoid-blue-purple-as-the-primary-palette",
+      "title": "Apply a cohesive, distinct industrial visual theme across the wireframe UI (colors, typography, spacing, and component styling) suitable for steel processing plants and shop-floor readability; avoid blue/purple as the primary palette.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-all-hardcoded-default-machine-names-in-the-ui-with-the-following-machine-names-hr-ctl-800-nwctl-stretch-leveller-hr-slitting-removing-the-current-generic-names-like-rolling-mill-1-etc-and-ensure-the-updated-names-are-reflected-consistently-anywhere-a-machine-list-or-machine-label-is-displayed",
+      "title": "Replace all hardcoded default machine names in the UI with the following machine names: \"HR CTL 800\", \"NWCTL\", \"Stretch Leveller\", \"HR Slitting\" (removing the current generic names like \"Rolling Mill #1\", etc.), and ensure the updated names are reflected consistently anywhere a machine list or machine label is displayed.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-revise-the-operator-tpm-check-sheet-ui-to-use-a-simplified-layout-while-expanding-the-checklist-with-additional-checklist-points-and-add-a-per-check-optional-remark-input-so-the-operator-can-write-a-remark-against-each-checklist-item",
+      "title": "Revise the Operator TPM check sheet UI to use a simplified layout while expanding the checklist with additional checklist points, and add a per-check optional remark input so the operator can write a remark against each checklist item.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-supervisor-tpm-approval-detail-screen-to-display-the-revised-checklist-content-and-include-any-per-check-remarks-in-the-checklist-review-presentation-read-only-for-supervisors",
+      "title": "Update the Supervisor TPM Approval Detail screen to display the revised checklist content and include any per-check remarks in the checklist review presentation (read-only for supervisors).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-a-frontend-flow-for-the-currently-signed-in-user-to-become-admin-calling-the-new-backend-promotion-api-and-then-switching-the-app-role-to-admin-so-admin-navigation-and-admin-pages-become-accessible",
+      "title": "Provide a frontend flow for the currently signed-in user to become Admin, calling the new backend promotion API and then switching the app role to `admin` so admin navigation and admin pages become accessible.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Role-based login and user management (Admin, Supervisor, Operator, Maintenance technician) with screen access restrictions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Dashboard overview showing machines running vs stopped, OEE summary, today’s breakdown count, pending maintenance tasks, and TPM compliance % with green/yellow/red indicators",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Machine status tracking per line (Running/Idle/Breakdown), start/stop time recording, downtime reason dropdown, and automatic downtime duration calculation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Maintenance management: planned maintenance scheduling (daily/weekly/monthly), reminders/alerts, completion marking with remarks; breakdown maintenance logging, technician assignment, repair time and root cause capture",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Autonomous maintenance (operator TPM) checklist: operators record cleaning/lubrication/inspection, optional photo upload, mark completion; supervisors verify and view missed activities",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Reports & analytics with downloads: daily machine downtime report, weekly TPM compliance, top 10 breakdown reasons, MTBF/MTTR trends, line-wise OEE; export to Excel/PDF",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "MVP UI wireframe/screen layouts for operator, supervisor, maintenance, and admin flows optimized for quick shop-floor use (large buttons, minimal typing)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Update default machine/line names to: HR CTL 800, NWCTL, Stretch Leveller, HR Slitting (replace generic machine names)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Revise TPM check sheet: simplify layout, expand with additional checklist points, and add per-check remarks field/input",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Change the requesting user's role/account permissions to Admin (make me admin)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add a backend API that can promote the current caller (Internet Identity principal) to Admin so that the caller is recognized as an Admin by backend authorization checks and by any existing `getCallerUserRole()` logic.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "TPM Line Monitor",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

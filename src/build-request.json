@@ -1,0 +1,60 @@
+{
+  "kind": "build_request",
+  "title": "Allow the current signed-in user to become an Admin",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-11",
+      "text": "Add a backend API that can promote the current caller (Internet Identity principal) to Admin so that the caller is recognized as an Admin by backend authorization checks and by any existing `getCallerUserRole()` logic.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Make admin to me"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes a shared update method that, when called by an authenticated principal, grants that principal Admin privileges in the canister’s authorization state.",
+        "After promotion, backend admin checks (e.g., `AccessControl.isAdmin(...)`) evaluate to true for that principal.",
+        "The API returns a clear success/failure result (or equivalent) so the frontend can confirm the promotion completed.",
+        "The change does not break existing profile read/write behavior (`getCallerUserProfile`, `getUserProfile`, `saveCallerUserProfile`)."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Provide a frontend flow for the currently signed-in user to become Admin, calling the new backend promotion API and then switching the app role to `admin` so admin navigation and admin pages become accessible.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Make admin to me"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When signed in, the user can trigger an explicit action in the UI to “Become Admin” (English user-facing text).",
+        "Triggering the action calls the backend admin-promotion API and shows a pending/loading state while the call is in progress.",
+        "On success, the app role is set to `admin` (using the existing role store) and the user is navigated to an admin route (e.g., `/admin/users`).",
+        "On failure, the UI displays an error message in English and does not switch the role to `admin`.",
+        "After a page refresh, the user can still access admin navigation/pages without having to repeat the promotion action (i.e., role and backend state remain consistent)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single-actor Motoko canister; keep all Motoko logic in `backend/main.mo`.",
+    "Generate `backend/migration.mo` only if required to preserve/upgrade existing stable state.",
+    "Do not edit frontend files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, or anything in `frontend/src/components/ui`; compose instead."
+  ],
+  "nonGoals": [
+    "Implementing a full admin invitation/approval workflow for promoting other users.",
+    "Adding third-party authentication providers beyond Internet Identity.",
+    "Building a complete RBAC permission matrix for every page/action beyond enabling the requesting user to be Admin."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

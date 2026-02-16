@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.25rem;
+        /* Industrial charcoal/steel palette - Light mode */
+        --background: 0.96 0.005 240;
+        --foreground: 0.20 0.01 240;
+        --card: 0.98 0.003 240;
+        --card-foreground: 0.20 0.01 240;
+        --popover: 0.98 0.003 240;
+        --popover-foreground: 0.20 0.01 240;
+        --primary: 0.28 0.015 240;
+        --primary-foreground: 0.98 0.003 240;
+        --secondary: 0.88 0.008 240;
+        --secondary-foreground: 0.20 0.01 240;
+        --muted: 0.92 0.006 240;
+        --muted-foreground: 0.50 0.01 240;
+        --accent: 0.88 0.008 240;
+        --accent-foreground: 0.20 0.01 240;
+        /* Safety colors - amber warning, green success, red destructive */
+        --warning: 0.75 0.15 60;
+        --warning-foreground: 0.20 0.01 240;
+        --success: 0.65 0.18 145;
+        --success-foreground: 0.98 0.003 240;
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0.003 240;
+        --border: 0.85 0.008 240;
+        --input: 0.85 0.008 240;
+        --ring: 0.50 0.01 240;
+        --chart-1: 0.65 0.18 145;
+        --chart-2: 0.75 0.15 60;
+        --chart-3: 0.55 0.22 25;
+        --chart-4: 0.60 0.12 200;
+        --chart-5: 0.70 0.10 280;
+        --sidebar: 0.28 0.015 240;
+        --sidebar-foreground: 0.92 0.006 240;
+        --sidebar-primary: 0.65 0.18 145;
+        --sidebar-primary-foreground: 0.98 0.003 240;
+        --sidebar-accent: 0.35 0.018 240;
+        --sidebar-accent-foreground: 0.92 0.006 240;
+        --sidebar-border: 0.22 0.012 240;
+        --sidebar-ring: 0.50 0.01 240;
+    }
+
+    .dark {
+        /* Industrial dark mode - charcoal backgrounds */
+        --background: 0.18 0.012 240;
+        --foreground: 0.92 0.006 240;
+        --card: 0.22 0.012 240;
+        --card-foreground: 0.92 0.006 240;
+        --popover: 0.20 0.012 240;
+        --popover-foreground: 0.92 0.006 240;
+        --primary: 0.75 0.008 240;
+        --primary-foreground: 0.18 0.012 240;
+        --secondary: 0.28 0.015 240;
+        --secondary-foreground: 0.92 0.006 240;
+        --muted: 0.28 0.015 240;
+        --muted-foreground: 0.60 0.01 240;
+        --accent: 0.32 0.018 240;
+        --accent-foreground: 0.92 0.006 240;
+        /* Safety colors adjusted for dark mode */
+        --warning: 0.70 0.18 55;
+        --warning-foreground: 0.18 0.012 240;
+        --success: 0.60 0.20 145;
+        --success-foreground: 0.18 0.012 240;
+        --destructive: 0.60 0.24 25;
+        --destructive-foreground: 0.92 0.006 240;
+        --border: 0.30 0.015 240;
+        --input: 0.30 0.015 240;
+        --ring: 0.60 0.01 240;
+        --chart-1: 0.60 0.20 145;
+        --chart-2: 0.70 0.18 55;
+        --chart-3: 0.60 0.24 25;
+        --chart-4: 0.55 0.15 200;
+        --chart-5: 0.65 0.12 280;
+        --sidebar: 0.22 0.012 240;
+        --sidebar-foreground: 0.92 0.006 240;
+        --sidebar-primary: 0.60 0.20 145;
+        --sidebar-primary-foreground: 0.92 0.006 240;
+        --sidebar-accent: 0.28 0.015 240;
+        --sidebar-accent-foreground: 0.92 0.006 240;
+        --sidebar-border: 0.30 0.015 240;
+        --sidebar-ring: 0.60 0.01 240;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    }
+}
+
+/* Shop-floor optimized typography */
+@layer base {
+    h1 {
+        @apply text-3xl font-bold tracking-tight;
+    }
+    h2 {
+        @apply text-2xl font-semibold tracking-tight;
+    }
+    h3 {
+        @apply text-xl font-semibold;
+    }
+    h4 {
+        @apply text-lg font-semibold;
+    }
+}
+
+/* Utility classes for status indicators */
+@layer utilities {
+    .status-success {
+        @apply bg-[oklch(var(--success))] text-[oklch(var(--success-foreground))];
+    }
+    .status-warning {
+        @apply bg-[oklch(var(--warning))] text-[oklch(var(--warning-foreground))];
+    }
+    .status-error {
+        @apply bg-[oklch(var(--destructive))] text-[oklch(var(--destructive-foreground))];
+    }
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-16T11:49:57.628Z",
+  "summary": "The diff adds a frontend “Become Admin” UI element and backend method named `promoteCallerToAdmin`, plus some role-sync logic, but it does not implement the requested self-promotion API/flow. The backend promotion method currently requires the caller to already be an admin and returns no success/failure result. The frontend does not call any backend promotion API and instead introduces an unrequested token-in-URL mechanism.",
+  "missing_requirements": [
+    {
+      "id": "REQ-11",
+      "requirement": "Backend API that promotes the *current caller* (authenticated principal) to Admin so they are recognized by backend admin checks and getCallerUserRole() logic, returning a clear success/failure result without breaking existing profile APIs.",
+      "reason": "The only added backend method `promoteCallerToAdmin` traps unless the caller is already an admin (so it does not allow a normal signed-in user to self-promote). It also returns `async ()` and traps on failure rather than returning a clear success/failure result. The diff also does not show any integration ensuring `getCallerUserRole()` will reflect the promotion.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "Frontend flow for signed-in user to explicitly “Become Admin” by calling the new backend promotion API, showing loading state, setting app role to `admin` on success, navigating to an admin route, and showing an English error message on failure; persistence after refresh should work via backend state.",
+      "reason": "The added `BecomeAdminButton` does not call any backend promotion API/mutation and has no pending/loading or error handling for such a call. It only checks `useIsCallerAdmin()` and, if already admin, sets role and navigates; otherwise it shows instructions for a URL token parameter instead of performing the promotion action.",
+      "evidence": [
+        "frontend/src/components/auth/BecomeAdminButton.tsx",
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "A token-in-URL based admin enablement scheme using a `caffeineAdminToken` query parameter and a copied URL template, implying admin is granted by visiting the app with a secret token parameter.",
+      "reason": "The BuildRequest explicitly asked for a backend API that promotes the current caller and a frontend flow that calls that API. No token URL parameter mechanism was requested.",
+      "evidence": [
+        "frontend/src/components/auth/BecomeAdminButton.tsx",
+        "frontend/src/utils/urlParams.ts"
+      ]
+    },
+    {
+      "description": "Backend restriction that only existing admins can call the promotion method (self-promotion blocked for non-admins).",
+      "reason": "REQ-11 requires the current authenticated caller to be able to promote themselves; the diff instead enforces an admin-only operation.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.84,
+  "changed_files": [
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/components/auth/BecomeAdminButton.tsx",
+    "frontend/src/components/layout/AppShell.tsx",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/auth/RoleLandingPage.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "project_state.json"
+  ]
+}

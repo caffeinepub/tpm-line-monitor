@@ -1,0 +1,27 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-provide-a-frontend-flow-for-the-currently-signed-in-user-to-become-admin-calling-the-new-backend-promotion-api-and-then-switching-the-app-role-to-admin-so-admin-navigation-and-admin-pages-become-accessible",
+      "featureTitle": "Provide a frontend flow for the currently signed-in user to become Admin, calling the new backend promotion API and then switching the app role to `admin` so admin navigation and admin pages become accessible.",
+      "files": [
+        "frontend/src/components/auth/BecomeAdminButton.tsx",
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/auth/RoleLandingPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
